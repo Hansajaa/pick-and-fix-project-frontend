@@ -5,6 +5,7 @@ import Paragraph from "../atoms/texts/Paragraph";
 import LevelTwoHeading from "../atoms/headings/LevelTwoHeading";
 import { useForm } from "react-hook-form";
 import GoogleAuthenticationButton from "../atoms/buttons/GoogleAuthenticationButton";
+import { Link } from "react-router-dom";
 
 function LoginForm(props) {
   const {
@@ -91,9 +92,9 @@ function LoginForm(props) {
 
       <div className="flex justify-between text-sm item-center mt-4">
         <Paragraph classes="mt-2" content="Don't have an account?" />
-        <button className="bg-white px-5 py-2 border rounded-xl mb-3 mr-4 hover:scale-110 duration-300">
+        <Link to={"/signup"} className="bg-white px-5 py-2 border rounded-xl mb-3 mr-4 hover:scale-110 duration-300">
           Register
-        </button>
+        </Link>
       </div>
     </>
   );
