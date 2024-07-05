@@ -1,22 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import LevelTwoHeading from "../atoms/headings/LevelTwoHeading";
 import Paragraph from "../atoms/texts/Paragraph";
 import AuthButton from "../atoms/buttons/AuthButton";
 import Devider from "../molecules/Devider";
 import GoogleAuthenticationButton from "../atoms/buttons/GoogleAuthenticationButton";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function SignupForm() {
+
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
+    getValues,
+    reset,
     formState: { errors },
   } = useForm();
 
   const handleClick = (data) => {
-        console.log(data);
+    axios
+      .post("http://localhost:3001/api/registerUser", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+         successAlert();
+         reset();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const successAlert = async () => {
+    await Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "You're Registered Successfully",
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    navigate('/');
   }
+
+  const [isExistsUsername, setIsExistsUsername] = useState(false);
+
+  const checkUsername = () => {
+    axios
+      .post(
+        `http://localhost:3001/api/checkUsername?userName=${getValues(
+          "userName"
+        )}`
+      )
+      .then((res) => {
+        if (res.data.data == true) {
+          setIsExistsUsername(true);
+        } else {
+          setIsExistsUsername(false);
+        }
+      })
+      .catch((err) => {
+        setIsExistsUsername(false);
+      });
+  };
 
   return (
     <>
@@ -24,10 +74,7 @@ function SignupForm() {
         content="Sign Up"
         classes="font-bold text-2xl mt-3 text-center text-[#354F52]"
       />
-      <Paragraph
-        classes="mt-2 text-center text-[#354F52]"
-        content="Welcome"
-      />
+      <Paragraph classes="mt-2 text-center text-[#354F52]" content="Welcome" />
 
       <form action="" className="flex flex-col p-3 gap-5">
         {/* username input field */}
@@ -35,6 +82,7 @@ function SignupForm() {
           className="p-2 mt-3 rounded-xl"
           type="text"
           placeholder="Username"
+          onKeyUp={checkUsername}
           {...register("userName", {
             required: {
               value: true,
@@ -43,13 +91,22 @@ function SignupForm() {
           })}
         />
         <span className="-mt-3 text-xs text-[red]">
-          {errors.userName?.message}
+          {isExistsUsername
+            ? "Username Already Exists"
+            : errors.userName?.message}
         </span>
 
         {/* contact number input field */}
-        <input className="p-2 rounded-xl" type="number" placeholder="* Contact Number" {...register("contactNumber", {required:{
-            value:true
-        }})}/>
+        <input
+          className="p-2 rounded-xl"
+          type="number"
+          placeholder="* Contact Number"
+          {...register("contactNumber", {
+            required: {
+              value: true,
+            },
+          })}
+        />
 
         {/* email input field */}
         <input
@@ -61,15 +118,31 @@ function SignupForm() {
               value: true,
               message: "* Required",
             },
+            pattern: {
+              value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: "Invalid email",
+            },
           })}
         />
         <span className="-mt-3 text-xs text-[red]">
           {errors.email?.message}
         </span>
 
-
         {/* address input field */}
-        <input className="p-2 rounded-xl" type="text" placeholder="* Address"/>
+        <input
+          className="p-2 rounded-xl"
+          type="text"
+          placeholder="* Address"
+          {...register("address", {
+            required: {
+              value: true,
+              message: "* Required",
+            },
+          })}
+        />
+        <span className="-mt-3 text-xs text-[red]">
+          {errors.address?.message}
+        </span>
 
         {/* password input field */}
         <div className="relative">
@@ -81,6 +154,11 @@ function SignupForm() {
               required: {
                 value: true,
                 message: "* Required",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/,
+                message:
+                  "Requires a minimum of 8 characters *[a-z], *[A-Z], *[!@#$%^&*]",
               },
             })}
           />
@@ -113,7 +191,10 @@ function SignupForm() {
 
       <div className="flex justify-between text-sm item-center mt-4">
         <Paragraph classes="mt-2 ml-2" content="You Already have an account?" />
-        <Link to={"/"} className="bg-white px-5 py-2 border rounded-xl mb-3 mr-4 hover:scale-110 duration-300">
+        <Link
+          to={"/"}
+          className="bg-white px-5 py-2 border rounded-xl mb-3 mr-4 hover:scale-110 duration-300"
+        >
           Login
         </Link>
       </div>
