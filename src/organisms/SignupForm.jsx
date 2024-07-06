@@ -22,15 +22,23 @@ function SignupForm() {
   } = useForm();
 
   const handleClick = (data) => {
+    const user = {
+        userName: data?.userName,
+        email: data?.email,
+        address: data?.address,
+        contactNumber: data?.contactNumber,
+        password: data?.password,
+        role: "User",
+    }
     axios
-      .post("http://localhost:3001/api/registerUser", data, {
+      .post("http://localhost:3001/api/registerUser", user, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((res) => {
-         successAlert();
-         reset();
+        reset();
+        successAlert();
       })
       .catch((err) => console.log(err));
   };
