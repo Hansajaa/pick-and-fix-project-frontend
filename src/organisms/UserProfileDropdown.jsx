@@ -44,7 +44,7 @@ function UserProfileDropdown({ isUserMenuOpen }) {
             </li>
             <li>
               <Link
-                to={"/login"}
+                to={"/"}
                 className="block px-4 py-2 text-sm text-white hover:bg-[#0e4047] dark:hover:bg-[#a8c9af] dark:text-gray-200 dark:hover:text-white"
               >
                 Sign out

@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "flowbite-react";
 import cardImg from "../assets/Card assets/card_img.jpg";
 import { Rating } from "flowbite-react";
 import { CiHeart } from "react-icons/ci";
 import { CiShare2 } from "react-icons/ci";
+import { IoMdHeart } from "react-icons/io";
 
 function ItemCard() {
+
+  const [isFav, setFav] = useState(false);
+
   return (
     <>
       <Card
@@ -33,7 +37,7 @@ function ItemCard() {
         </div>
 
         <div className="flex flex-row  place-self-end gap-3">
-          <CiHeart size={25} />
+          {isFav ? <IoMdHeart color="#ff0000" size={25} onClick={() => setFav(!isFav)}/> : <CiHeart size={25} onClick={() => setFav(!isFav)}/>}
           <CiShare2 size={25} />
         </div>
       </Card>

@@ -5,19 +5,27 @@ import Paragraph from "../atoms/texts/Paragraph";
 import LevelTwoHeading from "../atoms/headings/LevelTwoHeading";
 import { useForm } from "react-hook-form";
 import GoogleAuthenticationButton from "../atoms/buttons/GoogleAuthenticationButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 function LoginForm(props) {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  // axios.defaults.withCredentials = true;
   const handleClick = (data) => {
-    console.log(data);
+    axios.post('http://localhost:3001/api/login', data, {withCredentials:true})
+         .then(response => {
+            console.log(response);
+         })
+         .catch(err => console.log(err))
   };
-
+ 
   return (
     <>
       <LevelTwoHeading

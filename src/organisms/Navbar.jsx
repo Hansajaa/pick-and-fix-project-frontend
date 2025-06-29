@@ -65,7 +65,7 @@ function Navbar(dropdownState) {
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-[#84A98C] md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-[#84A98C] dark:bg-gray-800 md:dark:bg-[#84A98C] dark:border-gray-700">
               <li>
                 <Link
-                  to={"/"}
+                  to={"/home"}
                   className="block py-2 px-3 text-white rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-white md:dark:hover:text-[#2F3E46] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                   aria-current="page"
                 >
@@ -74,6 +74,7 @@ function Navbar(dropdownState) {
               </li>
               <li>
                 <Link
+                  to={"/posts"}
                   onClick={handleCategoryMenu}
                   className="block py-2 px-3 text-white rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-white md:dark:hover:text-[#2F3E46] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
