@@ -23,15 +23,14 @@ function SignupForm() {
 
   const handleClick = (data) => {
     const user = {
-        userName: data?.userName,
+        username: data?.userName,
         email: data?.email,
-        address: data?.address,
         contactNumber: data?.contactNumber,
         password: data?.password,
-        role: "User",
     }
+    
     axios
-      .post("http://localhost:3001/api/registerUser", user, {
+      .post("http://localhost:3000/auth/create-user", user, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -57,24 +56,24 @@ function SignupForm() {
 
   const [isExistsUsername, setIsExistsUsername] = useState(false);
 
-  const checkUsername = () => {
-    axios
-      .post(
-        `http://localhost:3001/api/checkUsername?userName=${getValues(
-          "userName"
-        )}`
-      )
-      .then((res) => {
-        if (res.data.data == true) {
-          setIsExistsUsername(true);
-        } else {
-          setIsExistsUsername(false);
-        }
-      })
-      .catch((err) => {
-        setIsExistsUsername(false);
-      });
-  };
+  // const checkUsername = () => {
+  //   axios
+  //     .post(
+  //       `http://localhost:3001/api/checkUsername?userName=${getValues(
+  //         "userName"
+  //       )}`
+  //     )
+  //     .then((res) => {
+  //       if (res.data.data == true) {
+  //         setIsExistsUsername(true);
+  //       } else {
+  //         setIsExistsUsername(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setIsExistsUsername(false);
+  //     });
+  // };
 
   return (
     <>
@@ -90,7 +89,6 @@ function SignupForm() {
           className="p-2 mt-3 rounded-xl"
           type="text"
           placeholder="Username"
-          onKeyUp={checkUsername}
           {...register("userName", {
             required: {
               value: true,
@@ -134,22 +132,6 @@ function SignupForm() {
         />
         <span className="-mt-3 text-xs text-[red]">
           {errors.email?.message}
-        </span>
-
-        {/* address input field */}
-        <input
-          className="p-2 rounded-xl"
-          type="text"
-          placeholder="* Address"
-          {...register("address", {
-            required: {
-              value: true,
-              message: "* Required",
-            },
-          })}
-        />
-        <span className="-mt-3 text-xs text-[red]">
-          {errors.address?.message}
         </span>
 
         {/* password input field */}
