@@ -23,11 +23,15 @@ function SignupForm() {
 
   const handleClick = (data) => {
     const user = {
+        role: 2,
         username: data?.userName,
         email: data?.email,
         contactNumber: data?.contactNumber,
         password: data?.password,
     }
+    
+    console.log(user);
+    
     
     axios
       .post("http://localhost:3000/auth/create-user", user, {
