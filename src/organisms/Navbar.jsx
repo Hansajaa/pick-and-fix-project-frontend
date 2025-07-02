@@ -12,6 +12,8 @@ function Navbar(dropdownState) {
   const [isMainMenuOpen, setMainMenu] = useState(false);
   const [isCategoryMenuOpen, setCategoryMenuOpen] = useState(false);
 
+  const [username, setUsername] = useState('');
+
   function handleMainMenu() {
     setMainMenu(!isMainMenuOpen);
     setUserMenu(false);
@@ -36,6 +38,12 @@ function Navbar(dropdownState) {
     setCategoryMenuOpen(false);
   }, [dropdownState]);
 
+  useEffect(()=>{
+    const userDetails = localStorage.getItem('user');
+
+    setUsername(JSON.parse(userDetails)?.userName);
+  },[])
+
   return (
     <div>
       <nav className="bg-[#84A98C] border-gray-200 dark:bg-[#84A98C] rounded-full w-auto ml-3 mt-3 mr-3">
@@ -46,13 +54,13 @@ function Navbar(dropdownState) {
           ></a>
           <div className="flex items-center md:order-2 space-x-3 md:space-x-2 rtl:space-x-reverse">
             {/* Cart Button */}
-            <CartButton/>
+            {/* <CartButton/> */}
 
             {/*User profile button */}
             <UserProfileButton handleUserMenu={handleUserMenu}/>
 
             {/* User profile Dropdown menu  */}
-            <UserProfileDropdown isUserMenuOpen={isUserMenuOpen}/>
+            <UserProfileDropdown isUserMenuOpen={isUserMenuOpen} userName={username}/>
 
             <NavbarMainMenuButton handleMainMenu={handleMainMenu}/>
           </div>
@@ -82,6 +90,15 @@ function Navbar(dropdownState) {
                 </Link>
               </li>
               <li>
+                <Link
+                  to={"/addPost"}
+                  onClick={handleCategoryMenu}
+                  className="block py-2 px-3 text-white rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-white md:dark:hover:text-[#2F3E46] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Add-Post
+                </Link>
+              </li>
+              <li>
                 <a
                   href="#"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-900 md:hover:bg-transparent md:hover:text-gray-900 md:p-0 dark:text-white md:dark:hover:text-[#2F3E46] dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
@@ -93,7 +110,7 @@ function Navbar(dropdownState) {
           </div>
 
           {/* category dropdown */}
-          <CategoryDropdown isCategoryMenuOpen={isCategoryMenuOpen}/>
+          {/* <CategoryDropdown isCategoryMenuOpen={isCategoryMenuOpen}/> */}
         </div>
       </nav>
     </div>

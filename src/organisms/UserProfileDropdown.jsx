@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function UserProfileDropdown({ isUserMenuOpen }) {
+function UserProfileDropdown({ isUserMenuOpen, userName }) {
+
+  const removeCache = () => {
+    localStorage.removeItem('user');
+  }
+
   return (
     <>
       {isUserMenuOpen && (
@@ -11,11 +16,11 @@ function UserProfileDropdown({ isUserMenuOpen }) {
         >
           <div className="px-4 py-3">
             <span className="block text-sm text-white dark:text-white">
-              Bonnie Green
+              {userName}
             </span>
-            <span className="block text-sm  text-white truncate dark:text-white">
+            {/* <span className="block text-sm  text-white truncate dark:text-white">
               name@flowbite.com
-            </span>
+            </span> */}
           </div>
           <ul className="py-2" aria-labelledby="user-menu-button">
             <li>
@@ -45,6 +50,7 @@ function UserProfileDropdown({ isUserMenuOpen }) {
             <li>
               <Link
                 to={"/"}
+                onClick={removeCache}
                 className="block px-4 py-2 text-sm text-white hover:bg-[#0e4047] dark:hover:bg-[#a8c9af] dark:text-gray-200 dark:hover:text-white"
               >
                 Sign out

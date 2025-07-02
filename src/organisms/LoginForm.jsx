@@ -19,9 +19,13 @@ function LoginForm(props) {
 
   // axios.defaults.withCredentials = true;
   const handleClick = (data) => {
-    axios.post('http://localhost:3001/api/login', data, {withCredentials:true})
+    
+    axios.post('http://localhost:3000/auth/login', data, {withCredentials:true})
          .then(response => {
-            console.log(response);
+            if(response.status == 201){
+                localStorage.setItem('user', JSON.stringify(response.data?.data));
+                navigate('/home')
+            }
          })
          .catch(err => console.log(err))
   };
@@ -43,7 +47,7 @@ function LoginForm(props) {
           className="p-2 mt-8 rounded-xl"
           type="text"
           placeholder="Username"
-          {...register("userName", {
+          {...register("username", {
             required: {
               value: true,
               message: "* Required",
@@ -51,7 +55,7 @@ function LoginForm(props) {
           })}
         />
         <span className="-mt-3 text-xs text-[red]">
-          {errors.userName?.message}
+          {errors.username?.message}
         </span>
 
         {/* password input field */}
