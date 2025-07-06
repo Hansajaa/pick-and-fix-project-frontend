@@ -9,19 +9,20 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function HomePage(props) {
-  const navigate = useNavigate();
-  
 
-  useEffect(()=>{
-      axios.post('http://localhost:3001/api/userAuthorize')
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-  },[])
-  
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/advertisement") // update with your actual API endpoint
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched data:", data); // check this
+        setPosts(data?.data); // adjust based on actual structure
+      })
+      .catch((err) => console.error("Error fetching posts", err));
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -36,22 +37,11 @@ function HomePage(props) {
         <SearchBar />
       </div>
 
-      {/* Card Section */}
-      <div className="mt-10">
-        {/* Responsive grid for cards */}
-        <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 lg:gap-20">
-          <div>
-            <ItemCard />
-          </div>
-
-          <div>
-            <ItemCard />
-          </div>
-
-          <div>
-            <ItemCard />
-          </div>
-        </div>
+      {/* Card Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-items-center mt-10 px-4 md:px-10">
+        {posts.slice(0, 6).map((post) => (
+          <ItemCard key={post.id} post={post} />
+        ))}
       </div>
 
       <SubscribeBar />
