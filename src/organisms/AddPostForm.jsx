@@ -148,7 +148,7 @@ function AddPostForm() {
 
         <button
           type="submit"
-          className="mt-6 bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700"
+          className="mt-6 bg-[#85A98C] text-white py-2 px-6 rounded-lg hover:bg-green-700"
         >
           Submit Post
         </button>
